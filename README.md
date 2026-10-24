@@ -36,6 +36,12 @@ python3 -m http.server 8080
 2. آن را در `chapters/manifest.json` ثبت کنید.
 3. روی `main` پوش کنید؛ GitHub Pages سایت را به‌روز می‌کند.
 
-## لایسنس
+## حقوق اثر
 
-[MIT](LICENSE)
+تمام حقوق محفوظ است. جزئیات در فایل [LICENSE](LICENSE).
+
+## حریم خصوصی
+
+[سیاست حریم خصوصی](privacy.html) — آدرس عمومی برای اپ:
+
+`https://mytesytgitacontu.github.io/under-the-noise-rain/privacy.html`
