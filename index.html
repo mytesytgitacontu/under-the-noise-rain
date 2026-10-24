@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="زیر بارانِ نویز — رمان پسارستاخیزی عاشقانه">
+  <meta name="theme-color" content="#0a0e17">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="بارانِ نویز">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <title>زیر بارانِ نویز</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Animated space background -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="nebula" aria-hidden="true"></div>
+
+  <!-- Top bar -->
+  <header class="top-bar glass">
+    <button id="btn-toc" class="icon-btn" type="button" title="فهرست فصل‌ها" aria-label="فهرست فصل‌ها">
+      <span class="icon">☰</span>
+    </button>
+    <div class="brand">
+      <img class="brand-logo" src="assets/icon-192.png" alt="" width="28" height="28">
+      <h1 class="novel-title" id="novel-title">زیر بارانِ نویز</h1>
+    </div>
+    <button id="btn-settings" class="icon-btn" type="button" title="تنظیمات" aria-label="تنظیمات">
+      <span class="icon">⚙</span>
+    </button>
+  </header>
+  <div id="cache-status" class="cache-status" hidden aria-live="polite"></div>
+
+  <!-- Table of Contents drawer -->
+  <aside id="toc-drawer" class="drawer glass" aria-hidden="true">
+    <div class="drawer-header">
+      <h2>فهرست فصل‌ها</h2>
+      <button id="btn-close-toc" class="icon-btn" type="button" aria-label="بستن">✕</button>
+    </div>
+    <nav id="toc-list" class="toc-list" role="navigation"></nav>
+  </aside>
+  <div id="toc-overlay" class="overlay" hidden></div>
+
+  <!-- Settings panel -->
+  <aside id="settings-panel" class="drawer glass settings-drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <h2>تنظیمات خواندن</h2>
+      <button id="btn-close-settings" class="icon-btn" type="button" aria-label="بستن">✕</button>
+    </div>
+    <div class="settings-body">
+      <div class="setting-group">
+        <label for="font-size">اندازه قلم</label>
+        <div class="range-row">
+          <button type="button" class="range-btn" data-action="font-dec" aria-label="کوچک‌تر">−</button>
+          <input type="range" id="font-size" min="14" max="28" step="1" value="18">
+          <button type="button" class="range-btn" data-action="font-inc" aria-label="بزرگ‌تر">+</button>
+        </div>
+        <span class="setting-value" id="font-size-val">۱۸</span>
+      </div>
+
+      <div class="setting-group">
+        <label for="font-family">قلم</label>
+        <select id="font-family">
+          <option value="Tahoma, 'Segoe UI', sans-serif">تاهوما</option>
+          <option value="'Segoe UI', Tahoma, sans-serif">سگوی UI</option>
+          <option value="Vazirmatn, Tahoma, sans-serif">وزیرمتن (در صورت نصب)</option>
+          <option value="Georgia, 'Times New Roman', serif">سریف</option>
+          <option value="system-ui, sans-serif">سیستم</option>
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <label for="line-height">فاصله خطوط</label>
+        <div class="range-row">
+          <button type="button" class="range-btn" data-action="lh-dec" aria-label="کمتر">−</button>
+          <input type="range" id="line-height" min="1.4" max="2.4" step="0.1" value="1.8">
+          <button type="button" class="range-btn" data-action="lh-inc" aria-label="بیشتر">+</button>
+        </div>
+        <span class="setting-value" id="line-height-val">۱٫۸</span>
+      </div>
+
+      <div class="setting-group">
+        <label for="content-width">عرض متن</label>
+        <div class="range-row">
+          <button type="button" class="range-btn" data-action="width-dec" aria-label="باریک‌تر">−</button>
+          <input type="range" id="content-width" min="520" max="1100" step="20" value="860">
+          <button type="button" class="range-btn" data-action="width-inc" aria-label="عریض‌تر">+</button>
+        </div>
+        <span class="setting-value" id="content-width-val">۸۶۰</span>
+      </div>
+
+      <div class="setting-group">
+        <label>پوسته</label>
+        <div class="theme-buttons" role="group" aria-label="انتخاب پوسته">
+          <button type="button" class="theme-btn" data-theme="light" title="روشن">☀ روشن</button>
+          <button type="button" class="theme-btn" data-theme="dark" title="تیره">☾ تیره</button>
+          <button type="button" class="theme-btn" data-theme="warm" title="شب گرم">✧ شب گرم</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div id="settings-overlay" class="overlay" hidden></div>
+
+  <!-- Main reading area -->
+  <main id="reader" class="reader">
+    <article id="chapter-content" class="chapter-content">
+      <div class="loading-state" id="loading-state">
+        <div class="spinner"></div>
+        <p>در حال بارگذاری…</p>
+      </div>
+      <div id="chapter-body" class="chapter-body" hidden></div>
+    </article>
+  </main>
+
+  <!-- Bottom navigation -->
+  <nav class="bottom-nav glass" aria-label="ناوبری فصل">
+    <button id="btn-prev" class="nav-btn" type="button" disabled>
+      <span class="nav-arrow">→</span>
+      <span class="nav-label">فصل قبل</span>
+    </button>
+    <div class="chapter-indicator">
+      <span id="chapter-progress">—</span>
+    </div>
+    <button id="btn-next" class="nav-btn" type="button" disabled>
+      <span class="nav-label">فصل بعد</span>
+      <span class="nav-arrow">←</span>
+    </button>
+  </nav>
+
+  <script src="js/settings.js"></script>
+  <script src="js/chapters.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

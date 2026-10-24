@@ -1,0 +1,56 @@
+{
+  "novelTitle": "زیر بارانِ نویز",
+  "author": "",
+  "chapters": [
+    {
+      "id": "chapter-00",
+      "title": "چیزی که از ما باقی ماند",
+      "file": "chapter-00.md"
+    },
+    {
+      "id": "chapter-01",
+      "title": "صدایی پشت دیوار",
+      "file": "chapter-01.md"
+    },
+    {
+      "id": "chapter-02",
+      "title": "فرکانس‌های مرده",
+      "file": "chapter-02.md"
+    },
+    {
+      "id": "chapter-03",
+      "title": "فاصله‌ی دو قدم",
+      "file": "chapter-03.md"
+    },
+    {
+      "id": "chapter-04",
+      "title": "راهی که روی نقشه نبود",
+      "file": "chapter-04.md"
+    },
+    {
+      "id": "chapter-05",
+      "title": "آدم‌هایی که آتش را تقسیم می‌کنند",
+      "file": "chapter-05.md"
+    },
+    {
+      "id": "chapter-06",
+      "title": "کسی آن سوی خش‌خش",
+      "file": "chapter-06.md"
+    },
+    {
+      "id": "chapter-07",
+      "title": "صدایی که نباید می‌آمد",
+      "file": "chapter-07.md"
+    },
+    {
+      "id": "chapter-08",
+      "title": "مردی با جیب‌های پر از سیم",
+      "file": "chapter-08.md"
+    },
+    {
+      "id": "chapter-09",
+      "title": "فاصله‌ای به اندازه‌ی یک پاسخ",
+      "file": "chapter-09.md"
+    }
+  ]
+}

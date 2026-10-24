@@ -1,0 +1,13 @@
+{
+  "manifestFormat": 1,
+  "version": 3,
+  "config": {
+    "websiteUrl": "https://mytesytgitacontu.github.io/under-the-noise-rain/",
+    "announcementText": "",
+    "aboutUs": "زیر بارانِ نویز — رمان پسارستاخیزی فارسی. خوانندهٔ آفلاین وب و اپ.",
+    "enablePullToRefresh": false,
+    "enableExitConfirmation": true,
+    "enableShareApp": true,
+    "enableRateApp": true
+  }
+}

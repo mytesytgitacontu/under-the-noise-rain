@@ -1,0 +1,12 @@
+node_modules/
+.wrangler/
+.deploy-tools/
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+.idea/
+.vscode/
+*.local
+EOF
