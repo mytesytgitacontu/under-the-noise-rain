@@ -11,18 +11,12 @@
   function initBackground() {
     var canvas = document.getElementById('bg-canvas');
     if (!canvas) return;
-    var isMobile = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
-    /* Weak phones: skip canvas completely */
-    if (isMobile) {
-      canvas.style.display = 'none';
-      var neb = document.querySelector('.nebula');
-      if (neb) neb.style.display = 'none';
-      return;
-    }
     var ctx = canvas.getContext('2d', { alpha: true });
     var stars = [];
     var w, h, dpr;
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var isMobile = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+    /* Mobile: static stars only — no rAF loop (biggest scroll/jank win) */
+    var reduced = isMobile || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var scrolling = false;
     var scrollIdleTimer = null;
     var rafId = 0;
