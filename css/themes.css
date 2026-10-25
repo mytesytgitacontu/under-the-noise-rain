@@ -1,39 +1,17 @@
-/* ===== Theme variables ===== */
+/* ===== Theme variables =====
+ * Both themes share the same dark atmospheric shell (background, chrome).
+ * Light mode only lightens the reading panel and text contrast.
+ */
 
 :root,
+[data-theme="dark"],
 [data-theme="light"] {
-  --bg-deep: #e8ecf4;
-  --bg-mid: #f0f4fa;
-  --bg-surface: rgba(255, 255, 255, 0.78);
-  --bg-surface-solid: #ffffff;
-  --bg-elevated: rgba(255, 255, 255, 0.92);
-  --text-primary: #1a202c;
-  --text-secondary: #4a5568;
-  --text-muted: #718096;
-  --accent: #2b6cb0;
-  --accent-soft: rgba(43, 108, 176, 0.12);
-  --border: rgba(0, 0, 0, 0.08);
-  --border-strong: rgba(0, 0, 0, 0.14);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --glass-blur: 14px;
-  --nebula-1: rgba(100, 140, 200, 0.2);
-  --nebula-2: rgba(160, 120, 180, 0.15);
-  --nebula-3: rgba(80, 160, 180, 0.12);
-  --star-color: #4a5568;
-  --spinner: #2b6cb0;
-  --overlay: rgba(0, 0, 0, 0.35);
-  --focus-ring: rgba(43, 108, 176, 0.45);
-  --btn-hover: rgba(0, 0, 0, 0.05);
-  --btn-active: rgba(0, 0, 0, 0.08);
-  color-scheme: light;
-}
-
-[data-theme="dark"] {
   --bg-deep: #050810;
   --bg-mid: #0a0e17;
+  --bg-chrome: rgba(18, 24, 38, 0.92);
   --bg-surface: rgba(18, 24, 38, 0.72);
   --bg-surface-solid: #121826;
-  --bg-elevated: rgba(28, 36, 56, 0.85);
+  --bg-elevated: rgba(28, 36, 56, 0.92);
   --text-primary: #e8ecf4;
   --text-secondary: #a0aec0;
   --text-muted: #6b7a90;
@@ -52,9 +30,19 @@
   --focus-ring: rgba(126, 184, 255, 0.5);
   --btn-hover: rgba(255, 255, 255, 0.08);
   --btn-active: rgba(255, 255, 255, 0.12);
+  --reader-bg: #121826;
+  --reader-text: #e8ecf4;
+  --reader-muted: #8a9bb0;
   color-scheme: dark;
 }
 
-
-
-
+/* Light = same night sky UI, paper-like reading surface */
+[data-theme="light"] {
+  --reader-bg: #f3efe6;
+  --reader-text: #1c1914;
+  --reader-muted: #5c554c;
+  --accent: #6ba3e0;
+  --accent-soft: rgba(107, 163, 224, 0.18);
+  --focus-ring: rgba(107, 163, 224, 0.45);
+  --spinner: #6ba3e0;
+}

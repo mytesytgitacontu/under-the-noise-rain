@@ -451,7 +451,7 @@ select:focus {
   border-radius: 1rem;
   min-height: 60vh;
   /* Solid surface — no backdrop-filter (major scroll lag on mobile) */
-  background: var(--bg-surface-solid, var(--bg-surface));
+  background: var(--reader-bg, var(--bg-surface-solid, var(--bg-surface)));
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   backdrop-filter: none;
@@ -486,11 +486,12 @@ select:focus {
   font-size: var(--font-size, 18px);
   line-height: var(--line-height, 1.8);
   font-family: var(--font-family, Tahoma, "Segoe UI", sans-serif);
-  color: var(--text-primary);
+  color: var(--reader-text, var(--text-primary));
   text-align: right;
 }
 
 .chapter-body .chapter-heading {
+  color: var(--reader-text, var(--text-primary));
   font-size: 1.35em;
   font-weight: 700;
   margin-bottom: 1.75rem;
@@ -513,6 +514,7 @@ select:focus {
 }
 
 .chapter-body .scene-header {
+  color: var(--reader-muted, var(--text-muted));
   margin: 2em 0 1em;
   font-size: 0.9em;
   color: var(--text-muted);
@@ -778,6 +780,7 @@ select:focus {
 
   .chapter-body p,
   .chapter-body .scene-header {
+  color: var(--reader-muted, var(--text-muted));
     content-visibility: auto;
     contain-intrinsic-size: auto 4.5rem;
   }
@@ -903,6 +906,7 @@ body.immersive .reader {
   gap: 0.15rem;
   flex-shrink: 0;
 }
+.theme-icon.is-hidden,
 .theme-icon[hidden] {
   display: none !important;
 }
@@ -1000,23 +1004,24 @@ html.blue-filter-on .chapter-content {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s ease;
-  /* blue-channel suppression layer */
-  background: rgba(255, 170, 90, calc(var(--blf-blue-cut, 0) * 0.35));
-  mix-blend-mode: difference;
+  background: rgb(255, 120, 40);
+  mix-blend-mode: multiply;
 }
 html.blue-filter-on .blue-light-overlay.active {
-  opacity: 1;
-  /* soft warm veil that primarily eats blue on light/dark content */
+  /* opacity driven by strength: mild at 20%, heavy warm at 100% */
+  opacity: calc(0.12 + var(--blf-t, 0.5) * 0.72);
   mix-blend-mode: multiply;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 150, 60, calc(var(--blf-blue-cut, 0) * 0.22)) 0%,
-    rgba(255, 120, 40, calc(var(--blf-blue-cut, 0) * 0.28)) 100%
-  );
+  background: rgb(255, 130, 35);
 }
 [data-theme="dark"].blue-filter-on .blue-light-overlay.active {
   mix-blend-mode: soft-light;
-  background: rgba(255, 140, 50, calc(var(--blf-blue-cut, 0) * 0.45));
+  opacity: calc(0.2 + var(--blf-t, 0.5) * 0.8);
+  background: rgb(255, 140, 40);
+}
+[data-theme="light"].blue-filter-on .blue-light-overlay.active {
+  mix-blend-mode: multiply;
+  opacity: calc(0.15 + var(--blf-t, 0.5) * 0.7);
+  background: rgb(255, 145, 50);
 }
 
 /* Keep chrome (bars/drawers) unfiltered — they sit above overlay in z-index */

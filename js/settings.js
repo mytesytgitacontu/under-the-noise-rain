@@ -12,7 +12,7 @@
     contentWidth: 860,
     theme: 'light',
     blueFilter: false,
-    blueFilterStrength: 50
+    blueFilterStrength: 55
   };
 
   function load() {
@@ -53,21 +53,28 @@
     var controls = document.getElementById('blue-filter-controls');
     var toggle = document.getElementById('blue-filter-toggle');
     var on = !!settings.blueFilter;
-    var s = typeof settings.blueFilterStrength === 'number' ? settings.blueFilterStrength : 50;
-    s = Math.max(10, Math.min(100, s));
+    var s = typeof settings.blueFilterStrength === 'number' ? settings.blueFilterStrength : 55;
+    s = Math.max(20, Math.min(100, s));
 
     root.classList.toggle('blue-filter-on', on);
     root.style.setProperty('--blf-strength', String(s));
 
-    /* Map strength → filter params (approximate night-shift / reduce blue) */
-    var t = s / 100;
-    var sepia = (t * 0.35).toFixed(3);
-    var saturate = (1 - t * 0.25).toFixed(3);
-    var hue = (-12 * t).toFixed(2); /* toward amber without full yellow */
-    var brightness = (1 - t * 0.04).toFixed(3);
-    var contrast = (1 + t * 0.03).toFixed(3);
-    /* Reduce blue channel extra via opacity of a blue-subtract layer */
-    var blueCut = (t * 0.55).toFixed(3);
+    /*
+     * Strength curve (acts like a real night-shift):
+     *  20% → mild blue cut, still relatively cool
+     *  55% → standard comfortable night reading
+     * 100% → fully warm / amber (maximum filter)
+     */
+    var t = (s - 20) / 80; /* 0 at 20% … 1 at 100% */
+    if (t < 0) t = 0;
+    root.style.setProperty('--blf-t', t.toFixed(3));
+
+    var sepia = (0.12 + t * 0.88).toFixed(3);       /* up to ~1.0 full warm */
+    var saturate = (1.05 - t * 0.35).toFixed(3);
+    var hue = (-8 - t * 28).toFixed(2);              /* shift hard toward amber */
+    var brightness = (1 - t * 0.08).toFixed(3);
+    var contrast = (1 + t * 0.06).toFixed(3);
+    var blueCut = (0.2 + t * 0.8).toFixed(3);
 
     root.style.setProperty('--blf-sepia', sepia);
     root.style.setProperty('--blf-saturate', saturate);
@@ -91,12 +98,22 @@
     var moon = document.getElementById('icon-moon');
     var sun = document.getElementById('icon-sun');
     var btn = document.getElementById('btn-theme-toggle');
-    var isLight = theme === 'light';
-    if (moon) moon.hidden = !isLight;
-    if (sun) sun.hidden = isLight;
+    var isLight = theme !== 'dark';
+    /* class-based hide: [hidden] on <svg> is unreliable in some WebViews */
+    if (moon) {
+      moon.hidden = !isLight;
+      moon.classList.toggle('is-hidden', !isLight);
+      moon.style.display = isLight ? '' : 'none';
+    }
+    if (sun) {
+      sun.hidden = isLight;
+      sun.classList.toggle('is-hidden', isLight);
+      sun.style.display = isLight ? 'none' : '';
+    }
     if (btn) {
       btn.title = isLight ? 'رفتن به تم تیره' : 'رفتن به تم روشن';
       btn.setAttribute('aria-label', btn.title);
+      btn.setAttribute('data-theme-state', isLight ? 'light' : 'dark');
     }
   }
 
@@ -212,7 +229,7 @@
         else if (action === 'lh-inc') update({ lineHeight: Math.min(2.4, +(settings.lineHeight + 0.1).toFixed(1)) });
         else if (action === 'width-dec') update({ contentWidth: Math.max(520, settings.contentWidth - 20) });
         else if (action === 'width-inc') update({ contentWidth: Math.min(1100, settings.contentWidth + 20) });
-        else if (action === 'warmth-dec') update({ blueFilterStrength: Math.max(10, settings.blueFilterStrength - 5) });
+        else if (action === 'warmth-dec') update({ blueFilterStrength: Math.max(20, settings.blueFilterStrength - 5) });
         else if (action === 'warmth-inc') update({ blueFilterStrength: Math.min(100, settings.blueFilterStrength + 5) });
       });
     });
