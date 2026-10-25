@@ -828,3 +828,31 @@ select:focus {
   text-rendering: optimizeSpeed;
   -webkit-font-smoothing: antialiased;
 }
+
+
+/* ===== Immersive reading (mobile tap to hide chrome) ===== */
+body.immersive .top-bar,
+body.immersive .bottom-nav,
+body.immersive .cache-status {
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+body.immersive .bottom-nav {
+  transform: translateY(120%);
+}
+body.immersive .reader {
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+@media (max-width: 768px), (pointer: coarse) {
+  .top-bar,
+  .bottom-nav {
+    transition: transform 0.28s ease, opacity 0.28s ease, visibility 0.28s;
+  }
+  body.immersive .reader {
+    padding-top: 0.75rem;
+    padding-bottom: 1rem;
+  }
+}

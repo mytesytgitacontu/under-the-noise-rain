@@ -345,9 +345,71 @@
     }
   }
 
+  /* ---------- Immersive mode (mobile: single tap hides chrome) ---------- */
+  var immersive = false;
+  var tapState = { x: 0, y: 0, t: 0, moved: false };
+
+  function isCoarsePointer() {
+    try {
+      return window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+    } catch (e) {
+      return ('ontouchstart' in window);
+    }
+  }
+
+  function setImmersive(on) {
+    immersive = !!on;
+    document.body.classList.toggle('immersive', immersive);
+  }
+
+  function toggleImmersive() {
+    if (!isCoarsePointer()) return;
+    setImmersive(!immersive);
+  }
+
+  function onReaderPointerDown(e) {
+    if (!isCoarsePointer()) return;
+    if (e.target.closest && (
+      e.target.closest('button') ||
+      e.target.closest('a') ||
+      e.target.closest('.drawer') ||
+      e.target.closest('.top-bar') ||
+      e.target.closest('.bottom-nav') ||
+      e.target.closest('.overlay')
+    )) return;
+    var pt = e.touches && e.touches[0] ? e.touches[0] : e;
+    tapState.x = pt.clientX;
+    tapState.y = pt.clientY;
+    tapState.t = Date.now();
+    tapState.moved = false;
+  }
+
+  function onReaderPointerMove(e) {
+    if (!tapState.t) return;
+    var pt = e.touches && e.touches[0] ? e.touches[0] : e;
+    if (Math.abs(pt.clientX - tapState.x) > 12 || Math.abs(pt.clientY - tapState.y) > 12) {
+      tapState.moved = true;
+    }
+  }
+
+  function onReaderPointerUp(e) {
+    if (!isCoarsePointer() || !tapState.t) return;
+    var dt = Date.now() - tapState.t;
+    var wasTap = !tapState.moved && dt < 350;
+    tapState.t = 0;
+    if (!wasTap) return;
+    /* Ignore if text selection exists */
+    try {
+      var sel = window.getSelection && window.getSelection();
+      if (sel && String(sel).length > 0) return;
+    } catch (err) { /* ignore */ }
+    toggleImmersive();
+  }
+
   /* ---------- Wire events ---------- */
   function bindUI() {
     document.getElementById('btn-toc').addEventListener('click', function () {
+      setImmersive(false);
       openDrawer('toc-drawer');
     });
     document.getElementById('btn-close-toc').addEventListener('click', function () {
@@ -358,6 +420,7 @@
     });
 
     document.getElementById('btn-settings').addEventListener('click', function () {
+      setImmersive(false);
       openDrawer('settings-panel');
     });
     document.getElementById('btn-close-settings').addEventListener('click', function () {
@@ -384,6 +447,15 @@
     });
 
     window.addEventListener('scroll', onScroll, { passive: true });
+
+    /* Mobile: single tap on reading area toggles top/bottom bars */
+    var reader = document.getElementById('reader');
+    if (reader) {
+      reader.addEventListener('touchstart', onReaderPointerDown, { passive: true });
+      reader.addEventListener('touchmove', onReaderPointerMove, { passive: true });
+      reader.addEventListener('touchend', onReaderPointerUp, { passive: true });
+    }
+
     document.addEventListener('visibilitychange', function () {
       if (document.visibilityState === 'hidden') onVisibilitySave();
     });
