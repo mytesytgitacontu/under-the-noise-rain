@@ -15,6 +15,11 @@
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <title>زیر بارانِ نویز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/themes.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -82,11 +87,13 @@
       <div class="setting-group">
         <label for="font-family">قلم</label>
         <select id="font-family">
-          <option value="Tahoma, 'Segoe UI', sans-serif">تاهوما</option>
-          <option value="'Segoe UI', Tahoma, sans-serif">سگوی UI</option>
-          <option value="Vazirmatn, Tahoma, sans-serif">وزیرمتن (در صورت نصب)</option>
-          <option value="Georgia, 'Times New Roman', serif">سریف</option>
-          <option value="system-ui, sans-serif">سیستم</option>
+          <option value="system">سیستم (پیش‌فرض)</option>
+          <option value="vazirmatn">وزیرمتن</option>
+          <option value="vazirmatn-thin">قلم نازک</option>
+          <option value="vazirmatn-bold">قلم کلفت</option>
+          <option value="amiri">خطاطی (امیری)</option>
+          <option value="gandom">دست‌نویس ۱ (گندم)</option>
+          <option value="nastaliq">دست‌نویس ۲ (نستعلیق)</option>
         </select>
       </div>
 
@@ -104,10 +111,10 @@
         <label for="content-width">عرض متن <span class="label-note">(فقط دسکتاپ)</span></label>
         <div class="range-row">
           <button type="button" class="range-btn" data-action="width-dec" aria-label="باریک‌تر">−</button>
-          <input type="range" id="content-width" min="560" max="1600" step="20" value="960">
+          <input type="range" id="content-width" min="560" max="1600" step="20" value="1600">
           <button type="button" class="range-btn" data-action="width-inc" aria-label="عریض‌تر">+</button>
         </div>
-        <span class="setting-value" id="content-width-val">۹۶۰</span>
+        <span class="setting-value" id="content-width-val">۱۶۰۰</span>
       </div>
 
       <div class="setting-group contact-links">

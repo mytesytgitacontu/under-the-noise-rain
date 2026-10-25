@@ -447,7 +447,7 @@ select:focus {
 
 .chapter-content {
   width: 100%;
-  max-width: min(var(--content-width, 960px), calc(100vw - 2rem));
+  max-width: min(var(--content-width, 1600px), calc(100vw - 2rem));
   padding: 2rem 1.75rem 3rem;
   border-radius: 1.15rem;
   min-height: 60vh;
@@ -495,7 +495,8 @@ select:focus {
 .chapter-body {
   font-size: var(--font-size, 18px);
   line-height: var(--line-height, 1.8);
-  font-family: var(--font-family, Tahoma, "Segoe UI", sans-serif);
+  font-family: var(--font-family, system-ui, Tahoma, sans-serif);
+  font-weight: var(--font-weight, 400);
   color: var(--reader-text, var(--text-primary));
   text-align: right;
 }
@@ -911,12 +912,12 @@ body.immersive .reader {
 /* ===== Content width (desktop only) ===== */
 @media (min-width: 769px) {
   .chapter-content {
-    max-width: min(var(--content-width, 960px), calc(100vw - 2.5rem));
+    max-width: min(var(--content-width, 1600px), calc(100vw - 2.5rem));
   }
 }
 @media (min-width: 1200px) {
   .chapter-content {
-    max-width: min(var(--content-width, 960px), calc(100vw - 3rem));
+    max-width: min(var(--content-width, 1600px), calc(100vw - 3rem));
   }
 }
 .label-note {

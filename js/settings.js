@@ -5,13 +5,50 @@
   'use strict';
 
   var STORAGE_KEY = 'under-the-noise-rain-settings';
+
+  /* Only system may be non-Persian-specific; all others are Persian webfonts */
+  var FONT_MAP = {
+    system: {
+      family: "system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif",
+      weight: '400'
+    },
+    vazirmatn: {
+      family: "'Vazirmatn', Tahoma, sans-serif",
+      weight: '400'
+    },
+    'vazirmatn-thin': {
+      family: "'Vazirmatn', Tahoma, sans-serif",
+      weight: '300'
+    },
+    'vazirmatn-bold': {
+      family: "'Vazirmatn', Tahoma, sans-serif",
+      weight: '800'
+    },
+    amiri: {
+      family: "'Amiri', 'Noto Naskh Arabic', serif",
+      weight: '400'
+    },
+    gandom: {
+      family: "'Gandom', Tahoma, sans-serif",
+      weight: '400'
+    },
+    nastaliq: {
+      family: "'Noto Nastaliq Urdu', 'Amiri', serif",
+      weight: '400'
+    }
+  };
+
   var DEFAULTS = {
     fontSize: 18,
-    fontFamily: "Tahoma, 'Segoe UI', sans-serif",
+    fontFamily: 'system',
     lineHeight: 1.8,
-    contentWidth: 960,
+    contentWidth: 1600,
     theme: 'light'
   };
+
+  function resolveFont(key) {
+    return FONT_MAP[key] || FONT_MAP.system;
+  }
 
   function load() {
     try {
@@ -21,10 +58,19 @@
       var out = Object.assign({}, DEFAULTS, parsed);
       if (out.theme === 'warm') out.theme = 'dark';
       if (out.theme !== 'light' && out.theme !== 'dark') out.theme = 'light';
-      /* drop legacy blue-filter keys if present */
       delete out.blueFilter;
       delete out.blueFilterStrength;
       delete out.blueFilterWarmth;
+      /* migrate legacy CSS font stacks → keys */
+      if (out.fontFamily && out.fontFamily.indexOf(',') !== -1) {
+        var lower = out.fontFamily.toLowerCase();
+        if (lower.indexOf('vazirmatn') !== -1) out.fontFamily = 'vazirmatn';
+        else if (lower.indexOf('amiri') !== -1) out.fontFamily = 'amiri';
+        else if (lower.indexOf('gandom') !== -1) out.fontFamily = 'gandom';
+        else if (lower.indexOf('nastaliq') !== -1) out.fontFamily = 'nastaliq';
+        else out.fontFamily = 'system';
+      }
+      if (!FONT_MAP[out.fontFamily]) out.fontFamily = 'system';
       if (out.contentWidth > 1600) out.contentWidth = 1600;
       if (out.contentWidth < 560) out.contentWidth = 560;
       return out;
@@ -63,8 +109,10 @@
 
   function apply(settings) {
     var root = document.documentElement;
+    var font = resolveFont(settings.fontFamily);
     root.style.setProperty('--font-size', settings.fontSize + 'px');
-    root.style.setProperty('--font-family', settings.fontFamily);
+    root.style.setProperty('--font-family', font.family);
+    root.style.setProperty('--font-weight', font.weight);
     root.style.setProperty('--line-height', String(settings.lineHeight));
     root.style.setProperty('--content-width', settings.contentWidth + 'px');
     root.setAttribute('data-theme', settings.theme === 'dark' ? 'dark' : 'light');
@@ -90,7 +138,10 @@
       fontSizeEl.value = settings.fontSize;
       if (fontSizeVal) fontSizeVal.textContent = toPersianDigits(settings.fontSize);
     }
-    if (fontFamilyEl) fontFamilyEl.value = settings.fontFamily;
+    if (fontFamilyEl) {
+      fontFamilyEl.value = settings.fontFamily;
+      if (!fontFamilyEl.value) fontFamilyEl.value = 'system';
+    }
     if (lineHeightEl) {
       lineHeightEl.value = settings.lineHeight;
       if (lineHeightVal) {
@@ -165,6 +216,7 @@
     initUI: initUI,
     bindControls: bindControls,
     toPersianDigits: toPersianDigits,
-    DEFAULTS: DEFAULTS
+    DEFAULTS: DEFAULTS,
+    FONT_MAP: FONT_MAP
   };
 })(window);
