@@ -45,12 +45,3 @@ python3 -m http.server 8080
 [سیاست حریم خصوصی](privacy.html) — آدرس عمومی برای اپ:
 
 `https://mytesytgitacontu.github.io/under-the-noise-rain/privacy.html`
-
-
-## اپلیکیشن اندروید
-
-دانلود از سایت (پس از قرار دادن فایل APK):
-
-https://mytesytgitacontu.github.io/under-the-noise-rain/releases/under-the-noise-rain.apk
-
-فایل را در مسیر `releases/under-the-noise-rain.apk` بگذارید و پوش کنید.

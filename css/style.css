@@ -927,31 +927,3 @@ body.immersive .reader {
 }
 
 
-/* ===== Android APK download ===== */
-.download-app .download-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  width: 100%;
-  margin: 0.5rem 0 0.55rem;
-  padding: 0.75rem 1rem;
-  border-radius: 0.65rem;
-  border: 1px solid var(--border-strong);
-  background: var(--accent);
-  color: #fff;
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow: var(--shadow);
-}
-[data-theme="light"] .download-app .download-btn {
-  color: #fff;
-}
-.download-app .download-btn:active {
-  opacity: 0.9;
-}
-.download-app .contact-link {
-  text-align: center;
-}
