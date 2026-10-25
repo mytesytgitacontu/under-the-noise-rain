@@ -33,11 +33,23 @@
       <img class="brand-logo" src="assets/icon-192.png" alt="" width="28" height="28">
       <h1 class="novel-title" id="novel-title">زیر بارانِ نویز</h1>
     </div>
-    <button id="btn-settings" class="icon-btn" type="button" title="تنظیمات" aria-label="تنظیمات">
-      <svg class="icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-        <path fill="currentColor" d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.07 7.07 0 0 0-1.63-.94l-.36-2.54A.48.48 0 0 0 14 2h-4a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.55-1.63.94l-2.39-.96a.49.49 0 0 0-.59.22L2.63 8.87a.49.49 0 0 0 .12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.75 14.52a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.3.59.22l2.39-.96c.5.39 1.04.71 1.63.94l.36 2.54c.05.24.25.41.49.41h4c.24 0 .44-.17.49-.41l.36-2.54c.59-.24 1.13-.55 1.63-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.61l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/>
-      </svg>
-    </button>
+    <div class="top-bar-actions">
+      <button id="btn-theme-toggle" class="icon-btn" type="button" title="تغییر تم روشن/تیره" aria-label="تغییر تم">
+        <!-- moon = currently light, tap to go dark -->
+        <svg id="icon-moon" class="icon-svg theme-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12.1 22c-5.2 0-9.5-3.9-10-9 0-.3.2-.6.5-.7.3-.1.6 0 .8.2 1.4 1.5 3.4 2.4 5.6 2.4 4.1 0 7.5-3.4 7.5-7.5 0-2.1-.9-4.1-2.4-5.5-.2-.2-.3-.5-.2-.8.1-.3.4-.5.7-.5 5.1.5 9 4.8 9 10 0 5.5-4.5 9.9-10 9.9z"/>
+        </svg>
+        <!-- sun = currently dark, tap to go light -->
+        <svg id="icon-sun" class="icon-svg theme-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" hidden>
+          <path fill="currentColor" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5c.6 0 1 .4 1 1v1.1c0 .6-.4 1-1 1s-1-.4-1-1V3c0-.6.4-1 1-1zm0 18.9c.6 0 1 .4 1 1V22c0 .6-.4 1-1 1s-1-.4-1-1v-1.1c0-.6.4-1 1-1zM3.5 11H2.4c-.6 0-1 .4-1 1s.4 1 1 1H3.5c.6 0 1-.4 1-1s-.4-1-1-1zm18.1 0h-1.1c-.6 0-1 .4-1 1s.4 1 1 1h1.1c.6 0 1-.4 1-1s-.4-1-1-1zM5.6 4.9l.8.8c.4.4.4 1 0 1.4-.4.4-1 .4-1.4 0l-.8-.8c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0zm12.4 12.4l.8.8c.4.4.4 1 0 1.4-.4.4-1 .4-1.4 0l-.8-.8c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0zM5.6 19.1c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4l.8-.8c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4l-.8.8zm12.4-12.4c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4l.8-.8c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4l-.8.8z"/>
+        </svg>
+      </button>
+      <button id="btn-settings" class="icon-btn" type="button" title="تنظیمات" aria-label="تنظیمات">
+        <svg class="icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.07 7.07 0 0 0-1.63-.94l-.36-2.54A.48.48 0 0 0 14 2h-4a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.55-1.63.94l-2.39-.96a.49.49 0 0 0-.59.22L2.63 8.87a.49.49 0 0 0 .12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.75 14.52a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.3.59.22l2.39-.96c.5.39 1.04.71 1.63.94l.36 2.54c.05.24.25.41.49.41h4c.24 0 .44-.17.49-.41l.36-2.54c.59-.24 1.13-.55 1.63-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.61l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/>
+        </svg>
+      </button>
+    </div>
   </header>
   <div id="cache-status" class="cache-status" hidden aria-live="polite"></div>
 
@@ -100,21 +112,23 @@
       </div>
 
       <div class="setting-group">
-        <label>پوسته</label>
-        <div class="theme-buttons" role="group" aria-label="انتخاب پوسته">
-          <button type="button" class="theme-btn" data-theme="light" title="روشن">روشن</button>
-          <button type="button" class="theme-btn" data-theme="dark" title="تیره">تیره</button>
-          <button type="button" class="theme-btn" data-theme="warm" title="فیلتر نور آبی">فیلتر نور آبی</button>
-        </div>
-        <p class="theme-hint">تم «فیلتر نور آبی» مناسب مطالعه در شب است و نور آبی صفحه را کاهش می‌دهد.</p>
-        <div id="blue-filter-controls" class="blue-filter-controls" hidden>
-          <label for="blue-filter-strength">شدت فیلتر — خنک ← گرم</label>
-          <div class="range-row">
-            <button type="button" class="range-btn" data-action="warmth-dec" aria-label="خنک‌تر">−</button>
-            <input type="range" id="blue-filter-strength" min="0" max="100" step="5" value="70">
-            <button type="button" class="range-btn" data-action="warmth-inc" aria-label="گرم‌تر">+</button>
+        <div class="toggle-row">
+          <div class="toggle-text">
+            <label for="blue-filter-toggle">فیلتر نور آبی</label>
+            <p class="theme-hint">نور آبی صفحه را کم می‌کند؛ مناسب مطالعه در شب. روی هر دو تم روشن و تیره اعمال می‌شود.</p>
           </div>
-          <span class="setting-value" id="blue-filter-val">۷۰٪</span>
+          <button type="button" id="blue-filter-toggle" class="toggle-switch" role="switch" aria-checked="false" aria-label="فیلتر نور آبی">
+            <span class="toggle-knob"></span>
+          </button>
+        </div>
+        <div id="blue-filter-controls" class="blue-filter-controls" hidden>
+          <label for="blue-filter-strength">شدت فیلتر</label>
+          <div class="range-row">
+            <button type="button" class="range-btn" data-action="warmth-dec" aria-label="کمتر">−</button>
+            <input type="range" id="blue-filter-strength" min="10" max="100" step="5" value="50">
+            <button type="button" class="range-btn" data-action="warmth-inc" aria-label="بیشتر">+</button>
+          </div>
+          <span class="setting-value" id="blue-filter-val">۵۰٪</span>
         </div>
       </div>
 

@@ -10,8 +10,9 @@
     fontFamily: "Tahoma, 'Segoe UI', sans-serif",
     lineHeight: 1.8,
     contentWidth: 860,
-    theme: 'warm',
-    blueFilterWarmth: 70
+    theme: 'light',
+    blueFilter: false,
+    blueFilterStrength: 50
   };
 
   function load() {
@@ -20,8 +21,15 @@
       if (!raw) return Object.assign({}, DEFAULTS);
       var parsed = JSON.parse(raw);
       var out = Object.assign({}, DEFAULTS, parsed);
-      /* migrate old name if needed */
-      if (out.theme === 'شب گرم') out.theme = 'warm';
+      /* migrate: old warm theme → dark + blue filter optional */
+      if (out.theme === 'warm') {
+        out.theme = 'dark';
+        if (typeof parsed.blueFilter === 'undefined') out.blueFilter = true;
+      }
+      if (typeof out.blueFilterWarmth === 'number' && typeof parsed.blueFilterStrength !== 'number') {
+        out.blueFilterStrength = out.blueFilterWarmth;
+      }
+      if (out.theme !== 'light' && out.theme !== 'dark') out.theme = 'light';
       return out;
     } catch (e) {
       return Object.assign({}, DEFAULTS);
@@ -31,33 +39,65 @@
   function save(settings) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-    } catch (e) {
-      /* quota or private mode */
-    }
+    } catch (e) { /* ignore */ }
   }
 
+  /**
+   * Real-ish blue-light reduction: lower blue channel via CSS filter on the
+   * reading surface (not a yellow wash of the whole UI).
+   * strength 10–100 → progressive blue cut + slight warmth.
+   */
   function applyBlueFilter(settings) {
     var root = document.documentElement;
     var overlay = document.getElementById('blue-light-overlay');
     var controls = document.getElementById('blue-filter-controls');
-    var isWarm = settings.theme === 'warm';
-    var warmth = typeof settings.blueFilterWarmth === 'number' ? settings.blueFilterWarmth : 70;
-    warmth = Math.max(0, Math.min(100, warmth));
+    var toggle = document.getElementById('blue-filter-toggle');
+    var on = !!settings.blueFilter;
+    var s = typeof settings.blueFilterStrength === 'number' ? settings.blueFilterStrength : 50;
+    s = Math.max(10, Math.min(100, s));
 
-    root.style.setProperty('--blue-filter-warmth', String(warmth));
-    /* 0 = cooler (less amber), 100 = warmer (more amber) */
-    var opacity = (0.08 + (warmth / 100) * 0.32).toFixed(3);
-    var hue = (25 + (warmth / 100) * 20).toFixed(1); /* orange shift */
-    root.style.setProperty('--blue-filter-opacity', opacity);
-    root.style.setProperty('--blue-filter-hue', hue + 'deg');
+    root.classList.toggle('blue-filter-on', on);
+    root.style.setProperty('--blf-strength', String(s));
+
+    /* Map strength → filter params (approximate night-shift / reduce blue) */
+    var t = s / 100;
+    var sepia = (t * 0.35).toFixed(3);
+    var saturate = (1 - t * 0.25).toFixed(3);
+    var hue = (-12 * t).toFixed(2); /* toward amber without full yellow */
+    var brightness = (1 - t * 0.04).toFixed(3);
+    var contrast = (1 + t * 0.03).toFixed(3);
+    /* Reduce blue channel extra via opacity of a blue-subtract layer */
+    var blueCut = (t * 0.55).toFixed(3);
+
+    root.style.setProperty('--blf-sepia', sepia);
+    root.style.setProperty('--blf-saturate', saturate);
+    root.style.setProperty('--blf-hue', hue + 'deg');
+    root.style.setProperty('--blf-brightness', brightness);
+    root.style.setProperty('--blf-contrast', contrast);
+    root.style.setProperty('--blf-blue-cut', blueCut);
 
     if (overlay) {
-      overlay.classList.toggle('active', isWarm);
+      overlay.classList.toggle('active', on);
+      overlay.setAttribute('aria-hidden', on ? 'false' : 'true');
     }
-    if (controls) {
-      controls.hidden = !isWarm;
+    if (controls) controls.hidden = !on;
+    if (toggle) {
+      toggle.setAttribute('aria-checked', on ? 'true' : 'false');
+      toggle.classList.toggle('on', on);
     }
-    document.body.classList.toggle('theme-warm', isWarm);
+  }
+
+  function updateThemeIcons(theme) {
+    var moon = document.getElementById('icon-moon');
+    var sun = document.getElementById('icon-sun');
+    var btn = document.getElementById('btn-theme-toggle');
+    var isLight = theme === 'light';
+    if (moon) moon.hidden = !isLight;
+    if (sun) sun.hidden = isLight;
+    if (btn) {
+      btn.title = isLight ? 'رفتن به تم تیره' : 'رفتن به تم روشن';
+      btn.setAttribute('aria-label', btn.title);
+    }
   }
 
   function apply(settings) {
@@ -66,7 +106,8 @@
     root.style.setProperty('--font-family', settings.fontFamily);
     root.style.setProperty('--line-height', String(settings.lineHeight));
     root.style.setProperty('--content-width', settings.contentWidth + 'px');
-    root.setAttribute('data-theme', settings.theme);
+    root.setAttribute('data-theme', settings.theme === 'dark' ? 'dark' : 'light');
+    updateThemeIcons(settings.theme);
     applyBlueFilter(settings);
   }
 
@@ -83,16 +124,14 @@
     var fontSizeVal = document.getElementById('font-size-val');
     var lineHeightVal = document.getElementById('line-height-val');
     var contentWidthVal = document.getElementById('content-width-val');
-    var warmthEl = document.getElementById('blue-filter-strength');
-    var warmthVal = document.getElementById('blue-filter-val');
+    var strengthEl = document.getElementById('blue-filter-strength');
+    var strengthVal = document.getElementById('blue-filter-val');
 
     if (fontSizeEl) {
       fontSizeEl.value = settings.fontSize;
       if (fontSizeVal) fontSizeVal.textContent = toPersianDigits(settings.fontSize);
     }
-    if (fontFamilyEl) {
-      fontFamilyEl.value = settings.fontFamily;
-    }
+    if (fontFamilyEl) fontFamilyEl.value = settings.fontFamily;
     if (lineHeightEl) {
       lineHeightEl.value = settings.lineHeight;
       if (lineHeightVal) {
@@ -103,17 +142,11 @@
       contentWidthEl.value = settings.contentWidth;
       if (contentWidthVal) contentWidthVal.textContent = toPersianDigits(settings.contentWidth);
     }
-    if (warmthEl) {
-      warmthEl.value = settings.blueFilterWarmth;
-      if (warmthVal) {
-        warmthVal.textContent = toPersianDigits(settings.blueFilterWarmth) + '٪';
-      }
+    if (strengthEl) {
+      strengthEl.value = settings.blueFilterStrength;
+      if (strengthVal) strengthVal.textContent = toPersianDigits(settings.blueFilterStrength) + '٪';
     }
-
-    document.querySelectorAll('.theme-btn').forEach(function (btn) {
-      btn.classList.toggle('active', btn.getAttribute('data-theme') === settings.theme);
-    });
-
+    updateThemeIcons(settings.theme);
     applyBlueFilter(settings);
   }
 
@@ -130,7 +163,9 @@
     var fontFamilyEl = document.getElementById('font-family');
     var lineHeightEl = document.getElementById('line-height');
     var contentWidthEl = document.getElementById('content-width');
-    var warmthEl = document.getElementById('blue-filter-strength');
+    var strengthEl = document.getElementById('blue-filter-strength');
+    var filterToggle = document.getElementById('blue-filter-toggle');
+    var themeBtn = document.getElementById('btn-theme-toggle');
 
     if (fontSizeEl) {
       fontSizeEl.addEventListener('input', function () {
@@ -152,9 +187,19 @@
         update({ contentWidth: +contentWidthEl.value });
       });
     }
-    if (warmthEl) {
-      warmthEl.addEventListener('input', function () {
-        update({ blueFilterWarmth: +warmthEl.value });
+    if (strengthEl) {
+      strengthEl.addEventListener('input', function () {
+        update({ blueFilterStrength: +strengthEl.value });
+      });
+    }
+    if (filterToggle) {
+      filterToggle.addEventListener('click', function () {
+        update({ blueFilter: !settings.blueFilter });
+      });
+    }
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        update({ theme: settings.theme === 'light' ? 'dark' : 'light' });
       });
     }
 
@@ -167,14 +212,8 @@
         else if (action === 'lh-inc') update({ lineHeight: Math.min(2.4, +(settings.lineHeight + 0.1).toFixed(1)) });
         else if (action === 'width-dec') update({ contentWidth: Math.max(520, settings.contentWidth - 20) });
         else if (action === 'width-inc') update({ contentWidth: Math.min(1100, settings.contentWidth + 20) });
-        else if (action === 'warmth-dec') update({ blueFilterWarmth: Math.max(0, settings.blueFilterWarmth - 5) });
-        else if (action === 'warmth-inc') update({ blueFilterWarmth: Math.min(100, settings.blueFilterWarmth + 5) });
-      });
-    });
-
-    document.querySelectorAll('.theme-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        update({ theme: btn.getAttribute('data-theme') });
+        else if (action === 'warmth-dec') update({ blueFilterStrength: Math.max(10, settings.blueFilterStrength - 5) });
+        else if (action === 'warmth-inc') update({ blueFilterStrength: Math.min(100, settings.blueFilterStrength + 5) });
       });
     });
   }

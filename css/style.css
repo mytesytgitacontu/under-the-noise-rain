@@ -869,56 +869,6 @@ body.immersive .reader {
   margin: 0 auto;
 }
 
-/* ===== Theme hint & blue filter ===== */
-.theme-hint {
-  margin-top: 0.65rem;
-  font-size: 0.78rem;
-  line-height: 1.55;
-  color: var(--text-muted);
-}
-
-.blue-filter-controls {
-  margin-top: 0.85rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--border);
-}
-.blue-filter-controls[hidden] {
-  display: none !important;
-}
-.blue-filter-controls label {
-  display: block;
-  margin-bottom: 0.4rem;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.blue-light-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  background: radial-gradient(
-    ellipse at center,
-    hsla(32, 85%, 55%, calc(var(--blue-filter-opacity, 0.25) * 0.85)) 0%,
-    hsla(22, 80%, 40%, var(--blue-filter-opacity, 0.25)) 100%
-  );
-  mix-blend-mode: multiply;
-}
-.blue-light-overlay.active {
-  opacity: 1;
-}
-/* Multiply is strong on light theme; only used with warm */
-[data-theme="warm"] .blue-light-overlay.active {
-  mix-blend-mode: soft-light;
-  background: linear-gradient(
-    180deg,
-    hsla(28, 90%, 50%, calc(var(--blue-filter-opacity, 0.22) * 0.7)) 0%,
-    hsla(18, 85%, 42%, var(--blue-filter-opacity, 0.22)) 100%
-  );
-}
-
 /* ===== Contact links in settings ===== */
 .contact-links {
   display: flex;
@@ -943,4 +893,137 @@ body.immersive .reader {
   font-size: 0.78rem;
   color: var(--text-muted);
   padding-right: 0.25rem;
+}
+
+
+/* ===== Top bar actions (theme + settings) ===== */
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex-shrink: 0;
+}
+.theme-icon[hidden] {
+  display: none !important;
+}
+
+/* ===== Blue-light filter (not a theme) ===== */
+.theme-hint {
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.toggle-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.toggle-text {
+  flex: 1;
+  min-width: 0;
+}
+.toggle-text label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--btn-hover);
+  flex-shrink: 0;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease;
+}
+.toggle-switch .toggle-knob {
+  position: absolute;
+  top: 2px;
+  right: 2px; /* RTL: off position toward right start? in RTL right is start */
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+/* In RTL layout, "on" slides toward the left (end) */
+.toggle-switch.on {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.toggle-switch.on .toggle-knob {
+  transform: translateX(-20px);
+  background: var(--accent);
+}
+
+.blue-filter-controls {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+.blue-filter-controls[hidden] {
+  display: none !important;
+}
+.blue-filter-controls label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/*
+ * Real blue-light reduction on the reading surface:
+ * 1) CSS filter reduces blue / shifts toward longer wavelengths
+ * 2) overlay with multiply cuts residual blue without painting UI chrome yellow
+ */
+html.blue-filter-on .reader,
+html.blue-filter-on .chapter-content {
+  filter:
+    brightness(var(--blf-brightness, 1))
+    contrast(var(--blf-contrast, 1))
+    sepia(var(--blf-sepia, 0))
+    saturate(var(--blf-saturate, 1))
+    hue-rotate(var(--blf-hue, 0deg));
+}
+
+.blue-light-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  /* blue-channel suppression layer */
+  background: rgba(255, 170, 90, calc(var(--blf-blue-cut, 0) * 0.35));
+  mix-blend-mode: difference;
+}
+html.blue-filter-on .blue-light-overlay.active {
+  opacity: 1;
+  /* soft warm veil that primarily eats blue on light/dark content */
+  mix-blend-mode: multiply;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 150, 60, calc(var(--blf-blue-cut, 0) * 0.22)) 0%,
+    rgba(255, 120, 40, calc(var(--blf-blue-cut, 0) * 0.28)) 100%
+  );
+}
+[data-theme="dark"].blue-filter-on .blue-light-overlay.active {
+  mix-blend-mode: soft-light;
+  background: rgba(255, 140, 50, calc(var(--blf-blue-cut, 0) * 0.45));
+}
+
+/* Keep chrome (bars/drawers) unfiltered — they sit above overlay in z-index */
+.top-bar,
+.bottom-nav,
+.drawer,
+.overlay,
+.cache-status {
+  filter: none !important;
 }
