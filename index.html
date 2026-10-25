@@ -20,7 +20,6 @@
 </head>
 <body>
   <!-- Animated space background -->
-  <div id="blue-light-overlay" class="blue-light-overlay" aria-hidden="true"></div>
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
   <div class="nebula" aria-hidden="true"></div>
 
@@ -101,35 +100,14 @@
         <span class="setting-value" id="line-height-val">۱٫۸</span>
       </div>
 
-      <div class="setting-group">
-        <label for="content-width">عرض متن</label>
+      <div class="setting-group desktop-only-setting">
+        <label for="content-width">عرض متن <span class="label-note">(فقط دسکتاپ)</span></label>
         <div class="range-row">
           <button type="button" class="range-btn" data-action="width-dec" aria-label="باریک‌تر">−</button>
-          <input type="range" id="content-width" min="520" max="1100" step="20" value="860">
+          <input type="range" id="content-width" min="560" max="1600" step="20" value="960">
           <button type="button" class="range-btn" data-action="width-inc" aria-label="عریض‌تر">+</button>
         </div>
-        <span class="setting-value" id="content-width-val">۸۶۰</span>
-      </div>
-
-      <div class="setting-group">
-        <div class="toggle-row">
-          <div class="toggle-text">
-            <label for="blue-filter-toggle">فیلتر نور آبی</label>
-            <p class="theme-hint">نور آبی صفحه را کم می‌کند؛ مناسب مطالعه در شب. روی هر دو تم روشن و تیره اعمال می‌شود.</p>
-          </div>
-          <button type="button" id="blue-filter-toggle" class="toggle-switch" role="switch" aria-checked="false" aria-label="فیلتر نور آبی">
-            <span class="toggle-knob"></span>
-          </button>
-        </div>
-        <div id="blue-filter-controls" class="blue-filter-controls" hidden>
-          <label for="blue-filter-strength">شدت فیلتر</label>
-          <div class="range-row">
-            <button type="button" class="range-btn" data-action="warmth-dec" aria-label="کمتر">−</button>
-            <input type="range" id="blue-filter-strength" min="20" max="100" step="5" value="55">
-            <button type="button" class="range-btn" data-action="warmth-inc" aria-label="بیشتر">+</button>
-          </div>
-          <span class="setting-value" id="blue-filter-val">۵۵٪</span>
-        </div>
+        <span class="setting-value" id="content-width-val">۹۶۰</span>
       </div>
 
       <div class="setting-group contact-links">
@@ -144,7 +122,7 @@
 
   <!-- Main reading area -->
   <main id="reader" class="reader">
-    <article id="chapter-content" class="chapter-content">
+    <article id="chapter-content" class="chapter-content liquid-glass">
       <div class="loading-state" id="loading-state">
         <div class="spinner"></div>
         <p>در حال بارگذاری…</p>
