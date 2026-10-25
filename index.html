@@ -20,6 +20,7 @@
 </head>
 <body>
   <!-- Animated space background -->
+  <div id="blue-light-overlay" class="blue-light-overlay" aria-hidden="true"></div>
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
   <div class="nebula" aria-hidden="true"></div>
 
@@ -33,7 +34,9 @@
       <h1 class="novel-title" id="novel-title">زیر بارانِ نویز</h1>
     </div>
     <button id="btn-settings" class="icon-btn" type="button" title="تنظیمات" aria-label="تنظیمات">
-      <span class="icon">⚙</span>
+      <svg class="icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.07 7.07 0 0 0-1.63-.94l-.36-2.54A.48.48 0 0 0 14 2h-4a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.55-1.63.94l-2.39-.96a.49.49 0 0 0-.59.22L2.63 8.87a.49.49 0 0 0 .12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.75 14.52a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.3.59.22l2.39-.96c.5.39 1.04.71 1.63.94l.36 2.54c.05.24.25.41.49.41h4c.24 0 .44-.17.49-.41l.36-2.54c.59-.24 1.13-.55 1.63-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.61l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/>
+      </svg>
     </button>
   </header>
   <div id="cache-status" class="cache-status" hidden aria-live="polite"></div>
@@ -99,10 +102,27 @@
       <div class="setting-group">
         <label>پوسته</label>
         <div class="theme-buttons" role="group" aria-label="انتخاب پوسته">
-          <button type="button" class="theme-btn" data-theme="light" title="روشن">☀ روشن</button>
-          <button type="button" class="theme-btn" data-theme="dark" title="تیره">☾ تیره</button>
-          <button type="button" class="theme-btn" data-theme="warm" title="شب گرم">✧ شب گرم</button>
+          <button type="button" class="theme-btn" data-theme="light" title="روشن">روشن</button>
+          <button type="button" class="theme-btn" data-theme="dark" title="تیره">تیره</button>
+          <button type="button" class="theme-btn" data-theme="warm" title="فیلتر نور آبی">فیلتر نور آبی</button>
         </div>
+        <p class="theme-hint">تم «فیلتر نور آبی» مناسب مطالعه در شب است و نور آبی صفحه را کاهش می‌دهد.</p>
+        <div id="blue-filter-controls" class="blue-filter-controls" hidden>
+          <label for="blue-filter-strength">شدت فیلتر — خنک ← گرم</label>
+          <div class="range-row">
+            <button type="button" class="range-btn" data-action="warmth-dec" aria-label="خنک‌تر">−</button>
+            <input type="range" id="blue-filter-strength" min="0" max="100" step="5" value="70">
+            <button type="button" class="range-btn" data-action="warmth-inc" aria-label="گرم‌تر">+</button>
+          </div>
+          <span class="setting-value" id="blue-filter-val">۷۰٪</span>
+        </div>
+      </div>
+
+      <div class="setting-group contact-links">
+        <label>ارتباط</label>
+        <a class="contact-link" href="https://t.me/MHDLabs" target="_blank" rel="noopener noreferrer">کانال تلگرام · MHDLabs</a>
+        <a class="contact-link" href="https://t.me/Mahdi_CS30" target="_blank" rel="noopener noreferrer">تلگرام شخصی · @Mahdi_CS30</a>
+        <span class="contact-id">شناسه: Mahdi_CS30@</span>
       </div>
     </div>
   </aside>

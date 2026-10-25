@@ -856,3 +856,91 @@ body.immersive .reader {
     padding-bottom: 1rem;
   }
 }
+
+
+/* ===== Settings icon SVG ===== */
+.icon-svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.icon-btn .icon-svg {
+  margin: 0 auto;
+}
+
+/* ===== Theme hint & blue filter ===== */
+.theme-hint {
+  margin-top: 0.65rem;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.blue-filter-controls {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+.blue-filter-controls[hidden] {
+  display: none !important;
+}
+.blue-filter-controls label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.blue-light-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  background: radial-gradient(
+    ellipse at center,
+    hsla(32, 85%, 55%, calc(var(--blue-filter-opacity, 0.25) * 0.85)) 0%,
+    hsla(22, 80%, 40%, var(--blue-filter-opacity, 0.25)) 100%
+  );
+  mix-blend-mode: multiply;
+}
+.blue-light-overlay.active {
+  opacity: 1;
+}
+/* Multiply is strong on light theme; only used with warm */
+[data-theme="warm"] .blue-light-overlay.active {
+  mix-blend-mode: soft-light;
+  background: linear-gradient(
+    180deg,
+    hsla(28, 90%, 50%, calc(var(--blue-filter-opacity, 0.22) * 0.7)) 0%,
+    hsla(18, 85%, 42%, var(--blue-filter-opacity, 0.22)) 100%
+  );
+}
+
+/* ===== Contact links in settings ===== */
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.contact-link {
+  display: block;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.55rem;
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.contact-link:active,
+.contact-link:hover {
+  background: var(--btn-hover);
+}
+.contact-id {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  padding-right: 0.25rem;
+}
