@@ -16,7 +16,7 @@
     var w, h, dpr;
     var isMobile = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
     /* Mobile: static stars only — no rAF loop (biggest scroll/jank win) */
-    var reduced = isMobile || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reduced = true; /* no star animation */
     var scrolling = false;
     var scrollIdleTimer = null;
     var rafId = 0;
