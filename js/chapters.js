@@ -355,8 +355,8 @@
       if (i === 0) {
         numLabel = 'مقدمه';
       } else {
-        numLabel = 'فصل ' + (typeof global.NovelSettings !== 'undefined' && NovelSettings.toPersianDigits
-          ? NovelSettings.toPersianDigits(i)
+        numLabel = 'فصل ' + (global.NovelSettings && global.NovelSettings.toPersianDigits
+          ? global.NovelSettings.toPersianDigits(i)
           : String(i));
       }
       label.textContent = title ? (numLabel + ' · ' + title) : numLabel;
