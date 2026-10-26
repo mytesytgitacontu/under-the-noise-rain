@@ -350,7 +350,16 @@
       var label = document.createElement('button');
       label.type = 'button';
       label.className = 'toc-label';
-      label.textContent = ch.title || ('فصل ' + (i + 1));
+      var title = ch.title || '';
+      var numLabel;
+      if (i === 0) {
+        numLabel = 'مقدمه';
+      } else {
+        numLabel = 'فصل ' + (typeof global.NovelSettings !== 'undefined' && NovelSettings.toPersianDigits
+          ? NovelSettings.toPersianDigits(i)
+          : String(i));
+      }
+      label.textContent = title ? (numLabel + ' · ' + title) : numLabel;
       label.setAttribute('aria-current', ch.id === currentId ? 'true' : 'false');
       label.addEventListener('click', function () {
         if (typeof onSelect === 'function') onSelect(i);
