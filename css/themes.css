@@ -16,7 +16,7 @@
   --border: rgba(30, 50, 80, 0.1);
   --border-strong: rgba(30, 50, 80, 0.16);
   --shadow: 0 8px 32px rgba(40, 60, 100, 0.08);
-  --glass-blur: 22px;
+  --glass-blur: 0px;
   --glass-sat: 1.35;
   --nebula-1: rgba(120, 160, 220, 0.28);
   --nebula-2: rgba(180, 140, 200, 0.18);
@@ -27,10 +27,10 @@
   --focus-ring: rgba(43, 108, 176, 0.4);
   --btn-hover: rgba(30, 50, 80, 0.06);
   --btn-active: rgba(30, 50, 80, 0.1);
-  --reader-bg: rgba(255, 255, 255, 0.38);
+  --reader-bg: rgba(255, 255, 255, 0.72);
   --reader-text: #1a2230;
   --reader-muted: #5c6b7e;
-  --chrome-bg: rgba(255, 255, 255, 0.4);
+  --chrome-bg: rgba(255, 255, 255, 0.96);
   color-scheme: light;
 }
 
@@ -49,7 +49,7 @@
   --border: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.16);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-  --glass-blur: 22px;
+  --glass-blur: 0px;
   --glass-sat: 1.4;
   --nebula-1: rgba(40, 60, 120, 0.35);
   --nebula-2: rgba(80, 40, 100, 0.25);
@@ -60,9 +60,9 @@
   --focus-ring: rgba(126, 184, 255, 0.5);
   --btn-hover: rgba(255, 255, 255, 0.08);
   --btn-active: rgba(255, 255, 255, 0.12);
-  --reader-bg: rgba(18, 24, 38, 0.4);
+  --reader-bg: rgba(18, 24, 38, 0.78);
   --reader-text: #e8ecf4;
   --reader-muted: #8a9bb0;
-  --chrome-bg: rgba(12, 18, 30, 0.42);
+  --chrome-bg: #121826;
   color-scheme: dark;
 }
